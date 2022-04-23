@@ -197,22 +197,26 @@ namespace Man_Power_Data
 		{
 			Saveoption();
 
-			ReportConfiguration = new ReportConfiguration();
+			
 			SaveFileDialog newfileDialog = new SaveFileDialog();
 			newfileDialog.Filter = "JSON File (*.json)|*.json";
 			if(newfileDialog.ShowDialog() == true)
 			{
-				FileStream file = File.Create(newfileDialog.FileName);
-				file.Close();
+				if (newfileDialog.FileName != null)
+				{
+					ReportConfiguration = new ReportConfiguration();
+					FileStream file = File.Create(newfileDialog.FileName);
+					file.Close();
 
-				ReportConfiguration.SectionConfigurationPath = newfileDialog.FileName;
-				ReportConfiguration.Sections.Add(new Section());
+					ReportConfiguration.SectionConfigurationPath = newfileDialog.FileName;
+					ReportConfiguration.Sections.Add(new Section());
 
-				var binddata = new Binding() { Source = ReportConfiguration.Sections };
-				OverViewDataGrid.SetBinding(DataGrid.ItemsSourceProperty, binddata);
+					var binddata = new Binding() { Source = ReportConfiguration.Sections };
+					OverViewDataGrid.SetBinding(DataGrid.ItemsSourceProperty, binddata);
 
-				var bindlabel = new Binding() { Source = ReportConfiguration.SectionConfigurationPath };
-				ReportConfigPathLabel.SetBinding(Label.ContentProperty, bindlabel);
+					var bindlabel = new Binding() { Source = ReportConfiguration.SectionConfigurationPath };
+					ReportConfigPathLabel.SetBinding(Label.ContentProperty, bindlabel);
+				}
 				
 			}
 		}
@@ -225,7 +229,7 @@ namespace Man_Power_Data
 				if (savefileDialog.ShowDialog() == true)
 				{
 					await ReportConfiguration.SaveSections(savefileDialog.FileName);
-					 ReportConfiguration.SectionConfigurationPath = savefileDialog.FileName;
+					ReportConfiguration.SectionConfigurationPath = savefileDialog.FileName;
 					await ReportConfiguration.LoadSections();
 				}
 			}
@@ -267,6 +271,8 @@ namespace Man_Power_Data
 				try
 				{
 					await ReportConfiguration.SaveSections();
+					await ReportConfiguration.LoadSections();
+					MessageBox.Show("File has been saved.");
 				}
 				catch (Exception ex)
 				{

@@ -94,6 +94,6 @@ namespace Man_Power_Data.Models
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		public static ReportConfiguration Default => new ReportConfiguration { _path = "LocationOverview.json" };
+		public static ReportConfiguration Default => new ReportConfiguration { _path = "LocationOverview.json", SectionConfigurationPath = "LocationOverview.json" };
 	}
 }
